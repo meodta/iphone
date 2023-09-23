@@ -6,6 +6,8 @@ const run = async () => {
     const timestamp = new Date()
 
     const browser = await launch({
+        executablePath: '/usr/bin/chromium-browser',
+        headless: true,
         args: ["--no-sandbox", "--disable-setuid-sandobx"],
     })
 
