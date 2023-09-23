@@ -1,7 +1,7 @@
 {
   "name": "iphone",
   "module": "index.ts",
-  "type": "module",
+  "type": "commonjs",
   "devDependencies": {
     "bun-types": "latest",
     "prisma": "^5.3.1"
