@@ -4,7 +4,7 @@
       "ESNext",
       "dom"
     ],
-    "module": "CommonJS",
+    "module": "nodenext",
     "target": "es5",
     "moduleResolution": "nodenext",
     "moduleDetection": "force",
