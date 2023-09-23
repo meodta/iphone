@@ -124,12 +124,12 @@ const run = async () => {
         [curr.store]: curr.available
     }), {} as Record<Store, boolean>)
 
-    const availableOffers = {
+    const availableOffers: Record<Store, boolean> = {
         Play: false,
         Euro: false,
         MediaExpert: false,
         MediaMarkt: false,
-    } satisfies Record<Store, boolean>
+    }
 
     for await (const item of settled) {
         if (item.status === 'rejected') {
