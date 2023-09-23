@@ -171,4 +171,4 @@ dist
 # IntelliJ based IDEs
 .idea
 
-dev.db
+prisma/dev.db
