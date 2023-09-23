@@ -9,6 +9,7 @@ const run = async () => {
         executablePath: '/usr/bin/chromium-browser',
         headless: true,
         args: ["--no-sandbox", "--disable-setuid-sandobx"],
+        timeout: 90000,
     })
 
     const Store = ['MediaMarkt', 'MediaExpert', 'Euro', 'Play'] as const
@@ -32,7 +33,7 @@ const run = async () => {
         },
         Play: {
             link: 'https://www.play.pl/dlafirm/produkty/apple/apple-iphone-15-pro-max-256-gb/?oid=4001297899&sku=TE-AP-15PM2-PL1-NT',
-            name: 'Play'
+            name: 'Play',
         }
     } satisfies Record<Store, Record<'link' | 'name', string>>
 
@@ -98,13 +99,6 @@ const run = async () => {
         }
     }
 
-    const settled = await Promise.allSettled([
-        testStore('Play', checkPlay()),
-        testStore('Euro', checkEuro()),
-        testStore('MediaMarkt', checkMediaExpert()),
-        testStore('MediaExpert', checkMediaMarkt())
-    ])
-
     const prisma = new PrismaClient()
 
     const lastEntries = await prisma.record.findMany({
@@ -133,20 +127,27 @@ const run = async () => {
         MediaMarkt: false,
     }
 
-    for await (const item of settled) {
-        if (item.status === 'rejected') {
-            console.error(item.reason)
-            continue
+    const fns = {
+        Play: checkPlay,
+        Euro: checkEuro,
+        MediaMarkt: checkMediaMarkt,
+        MediaExpert: checkMediaExpert
+    }
+
+    for await (const [store, fn] of Object.entries(fns)) {
+        try {
+            const result = await testStore(store as Store, fn())
+            availableOffers[result.store] = result.available
+            await prisma.record.create({
+                data: {
+                    time: timestamp,
+                    store: result.store,
+                    available: result.available,
+                }
+            })
+        } catch (e) {
+            console.error(e)
         }
-        const result = item.value
-        availableOffers[result.store] = result.available
-        await prisma.record.create({
-            data: {
-                time: timestamp,
-                store: result.store,
-                available: result.available,
-            }
-        })
     }
 
     const htmlOffers = Store
