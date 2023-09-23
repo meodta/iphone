@@ -4,7 +4,7 @@
       "ESNext",
       "dom"
     ],
-    "module": "CommonJS",
+    "module": "esnext",
     "target": "es6",
     "moduleResolution": "bundler",
     "moduleDetection": "force",
