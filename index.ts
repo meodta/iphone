@@ -8,7 +8,7 @@ const run = async () => {
     const timestamp = new Date()
 
     const browser = await puppeteer.launch({
-        // executablePath: '/usr/bin/chromium-browser',
+        executablePath: process.argv[2] === 'pi' ? '/usr/bin/chromium-browser' : undefined,
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
     })
 
