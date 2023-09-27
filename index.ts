@@ -1,6 +1,7 @@
 import {PrismaClient} from "@prisma/client";
 import puppeteer from 'puppeteer-extra'
 import {Page} from "puppeteer";
+import slugify from "slugify";
 
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(StealthPlugin())
@@ -114,7 +115,7 @@ const run = async () => {
     const takeScreenshot = async (page: Page, store: string) => {
         await page.screenshot({
             type: 'png',
-            path: `./screenshots/${store}/${timestamp.toISOString()}.png`
+            path: `./screenshots/${store}/${slugify(timestamp.toISOString())}.png`
         })
     }
 
