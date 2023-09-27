@@ -40,6 +40,7 @@ const run = async () => {
 
     const getPage = async (url: string) => {
         const page = await browser.newPage()
+        await page.setJavaScriptEnabled(true)
         await page.setExtraHTTPHeaders({
             "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
             "accept-language": "pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7",
@@ -109,7 +110,6 @@ const run = async () => {
             waitUntil: 'networkidle2',
         })
         console.log(response.status())
-        await page.setJavaScriptEnabled(true)
         return page
     }
 
