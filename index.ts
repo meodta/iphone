@@ -1,5 +1,6 @@
 import {PrismaClient} from "@prisma/client";
 import puppeteer from 'puppeteer-extra'
+import {Page} from "puppeteer";
 
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(StealthPlugin())
@@ -110,12 +111,16 @@ const run = async () => {
         return page
     }
 
-    const checkMediaMarkt = async () => {
-        const page = await getPage(Stores.MediaMarkt.link)
+    const takeScreenshot = async (page: Page, store: string) => {
         await page.screenshot({
             type: 'png',
-            path: `./screenshots/mm/${timestamp.toISOString()}`
+            path: `./screenshots/${store}/${timestamp.toISOString()}.png`
         })
+    }
+
+    const checkMediaMarkt = async () => {
+        const page = await getPage(Stores.MediaMarkt.link)
+        takeScreenshot(page, Stores.MediaMarkt.name)
         return page.$$eval('.product-show-price.sidebox', (priceBoxes) => {
             const priceBox = priceBoxes[0]
             if (!priceBox) return false
@@ -125,10 +130,7 @@ const run = async () => {
 
     const checkEuro = async () => {
         const page = await getPage(Stores.Euro.link)
-        await page.screenshot({
-            type: 'png',
-            path: `./screenshots/euro/${timestamp.toISOString()}`
-        })
+        await takeScreenshot(page, Stores.Euro.name)
         return page.$$eval("[icon='basket-add']", (buttons) => {
             const button = buttons[0]
             if (!button) return false
@@ -138,10 +140,7 @@ const run = async () => {
 
     const checkMediaExpert = async () => {
         const page = await getPage(Stores.MediaExpert.link)
-        await page.screenshot({
-            type: 'png',
-            path: `./screenshots/me/${timestamp.toISOString()}`
-        })
+        await takeScreenshot(page, Stores.MediaExpert.name)
         const isPreorder = await page.$$eval('.preorder', (preorder) => {
             return preorder != null
         })
@@ -156,10 +155,7 @@ const run = async () => {
 
     const checkPlay = async () => {
         const page = await getPage(Stores.Play.link)
-        await page.screenshot({
-            type: 'png',
-            path: `./screenshots/play/${timestamp.toISOString()}`
-        })
+        await takeScreenshot(page, Stores.Play.name)
         const isPreorder = await page.$$eval('.shipment-message', (preorder) => {
             return preorder != null
         })
