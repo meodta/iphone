@@ -115,7 +115,7 @@ const run = async () => {
     const takeScreenshot = async (page: Page, store: string) => {
         await page.screenshot({
             type: 'png',
-            path: `./screenshots/${store}/${slugify(timestamp.toISOString())}.png`
+            path: `./screenshots/${store}/${slugify(timestamp.toISOString(), {remove: /[*+~.()'"!:@]/g})}.png`
         })
     }
 
