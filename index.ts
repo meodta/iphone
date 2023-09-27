@@ -112,6 +112,10 @@ const run = async () => {
 
     const checkMediaMarkt = async () => {
         const page = await getPage(Stores.MediaMarkt.link)
+        await page.screenshot({
+            type: 'png',
+            path: `./screenshots/mm/${timestamp.toISOString()}`
+        })
         return page.$$eval('.product-show-price.sidebox', (priceBoxes) => {
             const priceBox = priceBoxes[0]
             if (!priceBox) return false
@@ -121,6 +125,10 @@ const run = async () => {
 
     const checkEuro = async () => {
         const page = await getPage(Stores.Euro.link)
+        await page.screenshot({
+            type: 'png',
+            path: `./screenshots/euro/${timestamp.toISOString()}`
+        })
         return page.$$eval("[icon='basket-add']", (buttons) => {
             const button = buttons[0]
             if (!button) return false
@@ -130,6 +138,10 @@ const run = async () => {
 
     const checkMediaExpert = async () => {
         const page = await getPage(Stores.MediaExpert.link)
+        await page.screenshot({
+            type: 'png',
+            path: `./screenshots/me/${timestamp.toISOString()}`
+        })
         const isPreorder = await page.$$eval('.preorder', (preorder) => {
             return preorder != null
         })
@@ -144,6 +156,10 @@ const run = async () => {
 
     const checkPlay = async () => {
         const page = await getPage(Stores.Play.link)
+        await page.screenshot({
+            type: 'png',
+            path: `./screenshots/play/${timestamp.toISOString()}`
+        })
         const isPreorder = await page.$$eval('.shipment-message', (preorder) => {
             return preorder != null
         })
