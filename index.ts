@@ -109,6 +109,7 @@ const run = async () => {
             waitUntil: 'networkidle2',
         })
         console.log(response.status())
+        await page.setJavaScriptEnabled(true)
         return page
     }
 
