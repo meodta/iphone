@@ -142,7 +142,9 @@ const run = async () => {
 
     const checkMediaExpert = async () => {
         const page = await getPage(Stores.MediaExpert.link)
+        console.log('Waiting 3secs')
         await new Promise(resolve => setTimeout(() => resolve(void 0), 3000))
+        console.log('Done waiting')
         await takeScreenshot(page, Stores.MediaExpert.name)
         const isPreorder = await page.$$eval('.preorder', (preorder) => {
             return preorder != null
